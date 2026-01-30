@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Sentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+enum MetricStatus {
+  SUCCESS
+  ERROR
+}
+
+model Review {
+  id                String    @id @default(uuid())
+  rawText           String    @map("raw_text") @db.Text
+  summary           String    @db.Text
+  sentiment         Sentiment
+  suggestedActions  Json      @map("suggested_actions") @db.JsonB
+  suggestedResponse String    @map("suggested_response") @db.Text
+  modelProvider     String    @map("model_provider") @db.VarChar(100)
+  modelVersion      String    @map("model_version") @db.VarChar(100)
+  language          String?   @db.VarChar(10)
+  createdAt         DateTime  @default(now()) @map("created_at")
+
+  metric ReviewMetric?
+  usage  ReviewUsage?
+
+  @@map("reviews")
+  @@index([createdAt])
+  @@index([sentiment])
+}
+
+model ReviewMetric {
+  id            String       @id @default(uuid())
+  reviewId      String       @unique @map("review_id")
+  inputTokens   Int          @map("input_tokens")
+  outputTokens  Int          @map("output_tokens")
+  totalTokens   Int          @map("total_tokens")
+  estimatedCost Decimal      @map("estimated_cost") @db.Decimal(10, 6)
+  latencyMs     Int          @map("latency_ms")
+  status        MetricStatus
+  createdAt     DateTime     @default(now()) @map("created_at")
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@map("review_metrics")
+  @@index([status])
+}
+
+model ReviewUsage {
+  id               String    @id @default(uuid())
+  reviewId         String    @unique @map("review_id")
+  agentId          String?   @map("agent_id") @db.VarChar(100)
+  editedResponse   String?   @map("edited_response") @db.Text
+  responseSent     Boolean   @default(false) @map("response_sent")
+  sentAt           DateTime? @map("sent_at")
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@map("review_usage")
+  @@index([agentId])
+}

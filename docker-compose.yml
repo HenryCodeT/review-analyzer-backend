@@ -1,0 +1,19 @@
+# Docker Compose para desarrollo local usando Cloud SQL
+# Ejecutar: docker-compose up -d
+
+services:
+  # Backend API
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: comment_analysis_api
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    volumes:
+      # Para desarrollo con hot-reload (opcional)
+      - ./src:/app/src
+      - ./prisma:/app/prisma
