@@ -54,7 +54,7 @@ export class GeminiAIService implements IAIService {
   }
 
   private buildPrompt(text: string, context: { language?: string }): string {
-    return `Eres un asistente de análisis de comentarios de clientes de e-commerce.
+    return `Eres un asistente experto en análisis de sentimiento de comentarios de clientes de e-commerce.
 
 IDIOMA: ${context.language || 'detectar automáticamente'}
 
@@ -63,10 +63,22 @@ COMENTARIO DEL CLIENTE:
 
 INSTRUCCIONES:
 Analiza el comentario y proporciona:
-1. RESUMEN: Un resumen breve del problema (máximo 2 líneas)
-2. SENTIMIENTO: POSITIVE, NEUTRAL o NEGATIVE
-3. ACCIONES: Lista de 2-4 acciones sugeridas
-4. RESPUESTA: Una respuesta profesional y empática para el cliente
+1. RESUMEN: Breve descripción del comentario (máximo 2 líneas).
+2. SENTIMIENTO: Clasifica según estas reglas:
+   - POSITIVE: El cliente expresa satisfacción, agradecimiento o experiencia favorable. Incluso si menciona un problema menor, el tono general es positivo.
+   - NEGATIVE: El cliente expresa frustración, queja, decepción o insatisfacción. Cualquier mención de problemas no resueltos, daños o mal servicio.
+   - NEUTRAL: El cliente hace una pregunta, solicitud de información o sugerencia sin carga emocional clara. No hay satisfacción ni insatisfacción evidente.
+   En caso de sentimientos mixtos, prioriza el sentimiento dominante. Si hay un problema concreto (producto dañado, retraso, etc.), clasifica como NEGATIVE aunque el tono sea educado.
+3. ACCIONES: Lista de 2-4 acciones sugeridas para un agente de soporte.
+4. RESPUESTA: Redacta una respuesta profesional, empática y personalizada lista para enviar al cliente.
+
+EJEMPLOS:
+- "El producto llegó bien pero el envío tardó más de lo esperado" → NEGATIVE (problema concreto: retraso en envío)
+- "Gracias por la atención, todo perfecto" → POSITIVE (satisfacción clara)
+- "¿Tienen este producto en color rojo?" → NEUTRAL (consulta sin carga emocional)
+- "El producto es bueno pero llegó con la caja rota" → NEGATIVE (daño en el envío pesa más que la calidad)
+- "Sería útil agregar más opciones de pago" → NEUTRAL (sugerencia constructiva)
+- "Recibí mi pedido antes de lo esperado, excelente servicio" → POSITIVE (experiencia favorable)
 
 FORMATO DE RESPUESTA (usar exactamente este formato JSON):
 {

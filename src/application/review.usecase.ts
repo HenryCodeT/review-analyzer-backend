@@ -55,8 +55,8 @@ export class AnalyzeCommentUseCase {
 
     // Save metric (non-blocking: log error but don't fail the request)
     const cost =
-      (analysis.usage.inputTokens * 0.075 +
-        analysis.usage.outputTokens * 0.3) /
+      (analysis.usage.inputTokens * 0.1 +
+        analysis.usage.outputTokens * 0.4) /
       1_000_000;
 
     this.metricRepository
