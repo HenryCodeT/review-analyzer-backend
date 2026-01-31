@@ -144,6 +144,12 @@ Three tables with 1:1 relationships via unique foreign keys:
 
 Pagination: `limit` (1-100, default 20) and `offset` (min 0) as query params.
 
+### Swagger UI
+
+Interactive API documentation available at `/api/docs`.
+
+![Swagger UI](docs/swagger-ui.png)
+
 ---
 
 ## Quick setup
