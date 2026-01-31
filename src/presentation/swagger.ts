@@ -7,7 +7,7 @@ const options: swaggerJsdoc.Options = {
       title: 'Review Analysis API',
       version: '1.0.0',
       description:
-        'MVP para analizar reviews de clientes de e-commerce con IA. Clasifica sentimiento, resume el problema, sugiere acciones y genera una respuesta lista para enviar.',
+        'AI-powered API for analyzing e-commerce customer reviews. Classifies sentiment, summarizes the issue, suggests actions, and generates a ready-to-send response.',
     },
     paths: {
       '/health': {
@@ -16,7 +16,7 @@ const options: swaggerJsdoc.Options = {
           summary: 'Health check',
           responses: {
             '200': {
-              description: 'Servidor activo',
+              description: 'Server is running',
               content: {
                 'application/json': {
                   schema: {
@@ -35,9 +35,9 @@ const options: swaggerJsdoc.Options = {
       '/api/reviews': {
         post: {
           tags: ['Reviews'],
-          summary: 'Analizar un comentario',
+          summary: 'Analyze a comment',
           description:
-            'Envía un comentario para análisis de sentimiento con IA',
+            'Submit a customer comment for AI-powered sentiment analysis',
           requestBody: {
             required: true,
             content: {
@@ -48,7 +48,7 @@ const options: swaggerJsdoc.Options = {
           },
           responses: {
             '200': {
-              description: 'Análisis completado',
+              description: 'Analysis completed',
               content: {
                 'application/json': {
                   schema: { $ref: '#/components/schemas/ReviewResponse' },
@@ -56,7 +56,7 @@ const options: swaggerJsdoc.Options = {
               },
             },
             '400': {
-              description: 'Error de validación',
+              description: 'Validation error',
               content: {
                 'application/json': {
                   schema: { $ref: '#/components/schemas/ErrorResponse' },
@@ -64,7 +64,7 @@ const options: swaggerJsdoc.Options = {
               },
             },
             '500': {
-              description: 'Error interno del servidor',
+              description: 'Internal server error',
               content: {
                 'application/json': {
                   schema: { $ref: '#/components/schemas/ErrorResponse' },
@@ -77,13 +77,13 @@ const options: swaggerJsdoc.Options = {
       '/api/reviews/history': {
         get: {
           tags: ['Reviews'],
-          summary: 'Obtener historial de reviews',
-          description: 'Retorna el historial paginado de reviews analizados',
+          summary: 'Get review history',
+          description: 'Returns paginated history of analyzed reviews',
           parameters: [
             {
               name: 'limit',
               in: 'query',
-              description: 'Cantidad de resultados (1-100)',
+              description: 'Number of results (1-100)',
               schema: {
                 type: 'integer',
                 default: 20,
@@ -94,13 +94,13 @@ const options: swaggerJsdoc.Options = {
             {
               name: 'offset',
               in: 'query',
-              description: 'Desplazamiento para paginación',
+              description: 'Pagination offset',
               schema: { type: 'integer', default: 0, minimum: 0 },
             },
           ],
           responses: {
             '200': {
-              description: 'Historial de reviews',
+              description: 'Review history',
               content: {
                 'application/json': {
                   schema: {
@@ -110,7 +110,7 @@ const options: swaggerJsdoc.Options = {
               },
             },
             '400': {
-              description: 'Parámetros inválidos',
+              description: 'Invalid parameters',
               content: {
                 'application/json': {
                   schema: { $ref: '#/components/schemas/ErrorResponse' },
@@ -123,20 +123,20 @@ const options: swaggerJsdoc.Options = {
       '/api/reviews/{id}': {
         get: {
           tags: ['Reviews'],
-          summary: 'Obtener detalle de un review',
-          description: 'Retorna el detalle completo de un review por su ID',
+          summary: 'Get review detail',
+          description: 'Returns the full detail of a review by its ID',
           parameters: [
             {
               name: 'id',
               in: 'path',
               required: true,
-              description: 'ID del review (UUID)',
+              description: 'Review ID (UUID)',
               schema: { type: 'string', format: 'uuid' },
             },
           ],
           responses: {
             '200': {
-              description: 'Detalle del review',
+              description: 'Review detail',
               content: {
                 'application/json': {
                   schema: { $ref: '#/components/schemas/ReviewDetailResponse' },
@@ -144,7 +144,7 @@ const options: swaggerJsdoc.Options = {
               },
             },
             '400': {
-              description: 'Review no encontrado',
+              description: 'Review not found',
               content: {
                 'application/json': {
                   schema: { $ref: '#/components/schemas/ErrorResponse' },
@@ -163,13 +163,13 @@ const options: swaggerJsdoc.Options = {
           properties: {
             text: {
               type: 'string',
-              description: 'Comentario a analizar',
-              example: 'El producto llegó dañado y nadie responde mis reclamos',
+              description: 'Comment to analyze',
+              example: 'The product arrived damaged and nobody responds to my complaints',
             },
             language: {
               type: 'string',
-              description: 'Código de idioma',
-              example: 'es',
+              description: 'Language code',
+              example: 'en',
             },
           },
         },
